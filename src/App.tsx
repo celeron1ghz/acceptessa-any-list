@@ -2,14 +2,13 @@
 import { Switch, Router, Route, Link } from 'wouter';
 import { useHashLocation } from 'wouter/use-hash-location';
 
-import Header from './Header'
+// import Header from './Header'
 
 function App() {
   return (
     <div className="min-h-full">
       <Switch>
         <Router hook={useHashLocation}>
-          <Header />
           <div className='p-5'>
             <Link href='/test' className="bg-blue-600 hover:bg-blue-500 text-white rounded px-4 py-2">LINK</Link>
           </div>
