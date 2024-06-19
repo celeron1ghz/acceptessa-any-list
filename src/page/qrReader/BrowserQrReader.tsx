@@ -12,9 +12,13 @@ export default function BrowserQrReader() {
   }, []);
 
   if (error) {
-    return <div className='container' style={{ paddingTop: '8vh' }}>
-      BarcodeDetectorに対応していません。ブラウザのQRリーダーか物理リーダーを利用してください。
-    </div>
+    return (
+      <Container>
+        <div className="pico-background-pink-150" style={{ padding: '2vw 3vw', borderRadius: '3vw' }}>
+          BarcodeDetectorに対応していません。ブラウザのQRリーダーか物理リーダーを利用してください。
+        </div>
+      </Container>
+    )
   }
 
   return (
