@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 import Container from '../../component/Container'
 
 export default function BrowserQrReader() {
