@@ -1,14 +1,14 @@
 import { useState } from 'react';
-
+import Container from '../../component/Container'
 
 export default function TextQrReader() {
-  const [error, setError] = useState();
+  // const [error, setError] = useState();
 
   return (
-    <div className='container' style={{ paddingTop: '8vh' }}>
+    <Container>
       <div style={{ border: '1px solid black' }}>
       </div>
       TextQr
-    </div>
+    </Container>
   );
 }

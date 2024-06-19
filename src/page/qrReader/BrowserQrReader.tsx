@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Container from '../../component/Container'
 
 export default function BrowserQrReader() {
   const [error, setError] = useState();
@@ -16,10 +17,10 @@ export default function BrowserQrReader() {
   }
 
   return (
-    <div className='container_' style={{ paddingTop: '8vh' }}>
+    <Container>
       <div style={{ border: '1px solid black' }}>
       </div>
       BrowserQr
-    </div>
+    </Container>
   );
 }
