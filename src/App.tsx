@@ -4,9 +4,18 @@ import { Switch, Router, Route, Link, useRoute } from 'wouter';
 import { useHashLocation } from 'wouter/use-hash-location';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faCog, faQrcode, faBarcode, faBars, faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faQrcode, faBarcode, faBars } from '@fortawesome/free-solid-svg-icons'
 
 import Header from './Header'
+import BrowserQrReader from './page/qrReader/BrowserQrReader'
+import JsQrReader from './page/qrReader/JsQrReader'
+import TextQrReader from './page/qrReader/TextQrReader'
+
+function Container(prop: { children: React.ReactNode }) {
+  return <div className='container' style={{ paddingTop: '8vh' }}>
+      {prop.children}
+  </div>
+}
 
 function App() {
   // const [user, setUser] = useState<any>(null);
@@ -63,56 +72,6 @@ function Root() {
       )
     }
   </div >
-}
-
-function JsQrReader() {
-  const [error, setError] = useState();
-
-
-  return (
-    <div className='container_' style={{ paddingTop: '8vh' }}>
-      <div style={{ border: '1px solid black' }}>
-      </div>
-      aaa
-    </div>
-  );
-}
-
-function TextQrReader() {
-  const [error, setError] = useState();
-
-
-  return (
-    <div className='container_' style={{ paddingTop: '8vh' }}>
-      <div style={{ border: '1px solid black' }}>
-      </div>
-      aaa
-    </div>
-  );
-}
-
-function BrowserQrReader() {
-  const [error, setError] = useState();
-
-  useEffect(() => {
-    if (typeof BarcodeDetector === 'undefined') {
-      setError(1);
-    }
-  }, []);
-
-  if (error) {
-    return <div className='container' style={{ paddingTop: '8vh' }}>
-      BarcodeDetectorに対応していません。ブラウザのQRリーダーか物理リーダーを利用してください。
-    </div>
-  }
-
-  return (
-    <div className='container_' style={{ paddingTop: '8vh' }}>
-      <div style={{ border: '1px solid black' }}>
-      </div>
-      aaa
-    </div>
-  );
 }
 
 function ListMenu() {
