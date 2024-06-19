@@ -1,48 +1,229 @@
 // import { useState } from 'react'
-import { Switch, Router, Route, Link } from 'wouter';
+import { useState, useEffect } from 'react';
+import { Switch, Router, Route, Link, useRoute } from 'wouter';
 import { useHashLocation } from 'wouter/use-hash-location';
 
-// import Header from './Header'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faCog, faQrcode, faBarcode, faBars, faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons'
+
+import Header from './Header'
 
 function App() {
+  // const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<any>({ userId: 'moge' });
+
+  if (!user) {
+    return (
+      <>
+        <Header user={null} />
+        <div className='container' style={{ paddingTop: '8vh' }}>
+          <div>ログインしてください</div>
+        </div>
+      </>
+    );
+  }
+
   return (
-    <div className="min-h-full">
-      <Switch>
-        <Router hook={useHashLocation}>
-          <div className='p-5'>
-            <Link href='/test' className="bg-blue-600 hover:bg-blue-500 text-white rounded px-4 py-2">LINK</Link>
-          </div>
-          <Route path="/" component={Root} />
-          <Route path="/test" component={Test} />
-        </Router>
-      </Switch>
+    <Switch>
+      <Router hook={useHashLocation}>
+        <Header user={user} />
+        <Route path="/" component={Root} />
+        <Route path="/list/:id/menu" component={ListMenu} />
+        <Route path="/list/:id/desc" component={ListDesc} />
+        <Route path="/list/:id/qrReader/browser" component={BrowserQrReader} />
+        <Route path="/list/:id/qrReader/js" component={JsQrReader} />
+        <Route path="/list/:id/qrReader/text" component={TextQrReader} />
+      </Router>
+    </Switch>
+  )
+}
+
+function LinkButton(prop: { href: string, label: any }) {
+  return <Link role="button" type='button' style={{ width: "100%", margin: "1vw 0", textAlign: 'left' }} href={prop.href} {...prop}>
+    {prop.label}
+  </Link>;
+
+}
+
+function Root() {
+  const [list, setList] = useState<Array<{ id: Integer; name: string }>>([
+    { id: 111, name: 'あいうえお1' },
+    { id: 222, name: 'あいうえお2' },
+  ]);
+
+  return <div className='container' style={{ paddingTop: '8vh' }}>
+    <nav aria-label="breadcrumb">
+      <ul>
+        <li>リスト選択</li>
+      </ul>
+    </nav>
+    {
+      list.map(
+        l => <LinkButton key={l.id} href={'/list/' + l.id + '/menu'} label={l.name} />
+      )
+    }
+  </div >
+}
+
+function JsQrReader() {
+  const [error, setError] = useState();
+
+
+  return (
+    <div className='container_' style={{ paddingTop: '8vh' }}>
+      <div style={{ border: '1px solid black' }}>
+      </div>
+      aaa
+    </div>
+  );
+}
+
+function TextQrReader() {
+  const [error, setError] = useState();
+
+
+  return (
+    <div className='container_' style={{ paddingTop: '8vh' }}>
+      <div style={{ border: '1px solid black' }}>
+      </div>
+      aaa
+    </div>
+  );
+}
+
+function BrowserQrReader() {
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    if (typeof BarcodeDetector === 'undefined') {
+      setError(1);
+    }
+  }, []);
+
+  if (error) {
+    return <div className='container' style={{ paddingTop: '8vh' }}>
+      BarcodeDetectorに対応していません。ブラウザのQRリーダーか物理リーダーを利用してください。
+    </div>
+  }
+
+  return (
+    <div className='container_' style={{ paddingTop: '8vh' }}>
+      <div style={{ border: '1px solid black' }}>
+      </div>
+      aaa
+    </div>
+  );
+}
+
+function ListMenu() {
+  const [match, params] = useRoute("/list/:id/menu");
+  const listId = params?.id;
+
+  return (
+    <div className='container' style={{ paddingTop: '8vh' }}>
+      <nav aria-label="breadcrumb">
+        <ul>
+          <li><Link href="/">リスト選択</Link></li>
+          <li>メニュー({listId})</li>
+        </ul>
+      </nav>
+      <div>
+        <h4>QRリーダーの起動</h4>
+        <Link role="button" type='button' className="outline" style={{ width: "100%", margin: "1vw 0", textAlign: 'left' }} href={'/list/' + listId + '/qrReader/js'}><FontAwesomeIcon icon={faQrcode} /> QRリーダーを起動</Link>
+        <Link role="button" type='button' className="outline" style={{ width: "100%", margin: "1vw 0", textAlign: 'left' }} href={'/list/' + listId + '/qrReader/browser'}><FontAwesomeIcon icon={faQrcode} /> QRリーダーを起動(experimental)</Link>
+        <Link role="button" type='button' className="outline" style={{ width: "100%", margin: "1vw 0", textAlign: 'left' }} href={'/list/' + listId + '/qrReader/text'}><FontAwesomeIcon icon={faBarcode} /> 物理QRリーダー用画面を表示</Link>
+      </div>
+      <div>
+        <h4>一覧</h4>
+        <LinkButton href={'/list/' + listId + '/desc'} label={<><FontAwesomeIcon icon={faBars} /> 一覧を表示</>} />
+        <LinkButton href={'/list/' + listId + '/setting'} label={<><FontAwesomeIcon icon={faCog} /> 設定</>} />
+      </div>
     </div>
   )
 }
 
-function Root() {
-  return <div className='p-5'>
-    Root
-  </div>
-}
+function ListDesc() {
+  const [match, params] = useRoute("/list/:id/desc");
+  const listId = params?.id;
 
-function Test() {
-  return <div>
-    <div className='p-5'>
-      <h1 className="text-3xl font-bold underline mb-6">
-        TestPage
-      </h1>
-      <Link href="/" className="bg-green-600 hover:bg-green-500 text-white rounded px-4 py-2">Return</Link>
+  // const [showSearch, setSearch] = useState<boolean>(false);
+  const [showConfig, setConfig] = useState<boolean>(false);
+  const [showDescription, setDescription] = useState<boolean>(false);
+
+  return <div className='container' style={{ paddingTop: '8vh' }}>
+    <div>
+      <nav aria-label="breadcrumb">
+        <ul>
+          <li><Link href="/">リスト選択</Link></li>
+          <li><Link href={'/list/' + listId + '/menu'}>メニュー({listId})</Link></li>
+          <li>一覧</li>
+        </ul>
+      </nav>
     </div>
+    <form role="search">
+      <input name="search" type="search" placeholder="検索" />
+      <input type="submit" value="Search" />
+    </form>
 
-    <header className="bg-white shadow">
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-      </div>
-    </header>
-    <main>
-      <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">{/* Your content */}</div>
-    </main>
+    <dialog open={showConfig}>
+      <article>
+        <header>
+          <button aria-label="Close" rel="prev" onClick={() => setConfig(false)}></button>
+          <p>
+            <strong>設定</strong>
+          </p>
+        </header>
+        <p>
+          We're excited to have you join us for our
+          upcoming event. Please arrive at the museum
+          on time to check in and get started.
+        </p>
+        <ul>
+          <li>Date: Saturday, April 15</li>
+          <li>Time: 10:00am - 12:00pm</li>
+          <li>Time: 10:00am - 12:00pm</li>
+        </ul>
+      </article>
+    </dialog>
+
+    <dialog open={showDescription}>
+      <article>
+        <header>
+          <button aria-label="Close" rel="prev" onClick={() => setConfig(false)}></button>
+          <p>
+            <strong>詳細</strong>
+          </p>
+        </header>
+        <p>
+          We're excited to have you join us for our
+          upcoming event. Please arrive at the museum
+          on time to check in and get started.
+        </p>
+        ああああ
+      </article>
+    </dialog>
+
+    <table className='striped'>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>名前</th>
+          <th>上限数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>aaaa</td>
+          <td>aaaa</td>
+          <td>aaaa</td>
+        </tr>
+        <tr>
+          <td>aaaa</td>
+          <td>aaaa</td>
+          <td>aaaa</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 }
 
