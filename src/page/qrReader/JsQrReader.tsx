@@ -231,7 +231,8 @@ export default function JsQrReader() {
         width={videoWidth}
         height={videoHeight}
       />
-      <button style={{ padding: '1vw 2vw' }}>aaa</button>
+      <button className="pico-color-red-450 pico-background-red-450" style={{ marginTop: '2vw', marginBottom: '2vw', padding: '1vw 2vw', width: '100%' }}>削除</button>
+      <button className="pico-color-lime-450 pico-background-lime-450" style={{ marginTop: '2vw', marginBottom: '2vw', padding: '1vw 2vw', width: '100%' }}>追加</button>
       <div>
         最後に読み取りが成功したコード {lastSuccessCode}
       </div>
